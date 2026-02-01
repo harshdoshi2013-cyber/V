@@ -31,8 +31,14 @@
     to { transform: scale(1); opacity: 1; }
   }
 
-  h1 { color: #ff4d6d; }
-  p { font-size: 18px; color: #555; }
+  h1 {
+    color: #ff4d6d;
+  }
+
+  p {
+    font-size: 18px;
+    color: #555;
+  }
 
   button {
     font-size: 18px;
@@ -41,10 +47,22 @@
     border-radius: 12px;
     border: none;
     cursor: pointer;
+    transition: transform 0.2s;
   }
 
-  #yes { background: #ff4d6d; color: white; }
-  #no { background: #ccc; position: absolute; }
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  #yes {
+    background: #ff4d6d;
+    color: white;
+  }
+
+  #no {
+    background: #ccc;
+    position: absolute;
+  }
 
   .heart {
     position: fixed;
@@ -56,49 +74,40 @@
     from { transform: translateY(100vh); opacity: 0; }
     to { transform: translateY(-10vh); opacity: 1; }
   }
-
-  iframe {
-    position: fixed;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-  }
 </style>
 </head>
 
 <body>
 
-<!-- DISCLAIMER -->
+<!-- START / DISCLAIMER SCREEN -->
 <div class="card" id="start">
   <h1>🔊 Heads up!</h1>
   <p>Please increase your volume<br>for a better experience 💖</p>
-  <button onclick="start()">I’m ready 🎧</button>
+  <button onclick="startExperience()">I’m ready 🎧</button>
 </div>
 
-<!-- AUDIO PLAYER -->
-<iframe
-  id="player"
-  allow="autoplay; encrypted-media"
-></iframe>
+<!-- AUDIO -->
+<audio id="music" src="perfect.mp3"></audio>
 
 <script>
-function start() {
-  // Load & autoplay Perfect – Ed Sheeran
-  document.getElementById("player").src =
-    "https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&controls=0&loop=1&playlist=2Vv-BfVoq4g";
+function startExperience() {
+  // play music
+  const audio = document.getElementById("music");
+  audio.volume = 0.8;   // nice romantic level
+  audio.play();
 
+  // show valentine question
   document.body.innerHTML = `
     <div class="card">
       <h1>Maitri, will you be my Valentine? 💖</h1>
       <p>I have something special to ask you 😌</p>
-      <button id="yes" onclick="yes()">Yes 💘</button>
-      <button id="no" onmouseover="move()">No 🙃</button>
+      <button id="yes" onclick="yesClicked()">Yes 💘</button>
+      <button id="no" onmouseover="moveNo()">No 🙃</button>
     </div>
   `;
 }
 
-function yes() {
+function yesClicked() {
   document.body.innerHTML = `
     <div class="card">
       <h1>YAY!!! 💍💖</h1>
@@ -106,24 +115,27 @@ function yes() {
       <p>Happy Valentine’s Day 💕</p>
     </div>
   `;
-  hearts();
+  floatingHearts();
 }
 
-function move() {
-  const b = document.getElementById("no");
-  b.style.left = Math.random() * (window.innerWidth - 100) + "px";
-  b.style.top = Math.random() * (window.innerHeight - 50) + "px";
+function moveNo() {
+  const no = document.getElementById("no");
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 50);
+  no.style.left = x + "px";
+  no.style.top = y + "px";
 }
 
-function hearts() {
-  for (let i = 0; i < 25; i++) {
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerHTML = "💖";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.animationDuration = (Math.random() * 2 + 3) + "s";
-    document.body.appendChild(h);
-    setTimeout(() => h.remove(), 5000);
+function floatingHearts() {
+  for (let i = 0; i < 30; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
   }
 }
 </script>
