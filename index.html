@@ -3,56 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💘 A Question For You</title>
+<title>Maitri 💕</title>
+
 <style>
   body {
     font-family: 'Comic Sans MS', cursive;
     background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     height: 100vh;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0;
+    overflow: hidden;
   }
+
   .card {
     background: white;
-    padding: 30px;
-    border-radius: 20px;
+    padding: 35px;
+    border-radius: 25px;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    animation: pop 0.8s ease;
   }
+
+  @keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
   h1 {
     color: #ff4d6d;
   }
+
+  p {
+    font-size: 18px;
+    color: #555;
+  }
+
   button {
     font-size: 18px;
-    padding: 10px 20px;
-    margin: 10px;
-    border-radius: 10px;
+    padding: 12px 24px;
+    margin: 12px;
+    border-radius: 12px;
     border: none;
     cursor: pointer;
+    transition: transform 0.2s;
   }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
   #yes {
     background: #ff4d6d;
     color: white;
   }
+
   #no {
     background: #ccc;
     position: absolute;
   }
+
+  .heart {
+    position: fixed;
+    font-size: 24px;
+    animation: float 4s linear forwards;
+  }
+
+  @keyframes float {
+    from { transform: translateY(100vh); opacity: 0; }
+    to { transform: translateY(-10vh); opacity: 1; }
+  }
 </style>
 </head>
+
 <body>
 
-<div class="card">
-  <h1>Will you be my Valentine? 💖</h1>
-  <button id="yes" onclick="yesClick()">Yes 💘</button>
-  <button id="no" onmouseover="moveNo()">No 🙃</button>
+<!-- DISCLAIMER SCREEN -->
+<div class="card" id="disclaimer">
+  <h1>🔊 Heads up!</h1>
+  <p>Please increase your volume<br>for a better experience 💖</p>
+  <button onclick="startExperience()">I’m ready 🎧</button>
 </div>
 
+<!-- HIDDEN YOUTUBE AUDIO (Perfect – Ed Sheeran) -->
+<iframe
+  id="music"
+  width="0"
+  height="0"
+  src=""
+  allow="autoplay"
+></iframe>
+
 <script>
-function yesClick() {
-  document.body.innerHTML = "<h1 style='color:white;'>YAY!!! 💕💍</h1><p style='color:white;font-size:24px;'>Best choice ever 😍</p>";
+function startExperience() {
+  // Load & play the song
+  document.getElementById("music").src =
+    "https://www.youtube.com/embed/2Vv-BfVoq4g?autoplay=1&loop=1&playlist=2Vv-BfVoq4g";
+
+  // Show Valentine page
+  document.body.innerHTML = `
+    <div class="card">
+      <h1>Maitri, will you be my Valentine? 💖</h1>
+      <p>I have something special to ask you 😌</p>
+      <button id="yes" onclick="yesClicked()">Yes 💘</button>
+      <button id="no" onmouseover="moveNo()">No 🙃</button>
+    </div>
+  `;
+}
+
+function yesClicked() {
+  document.body.innerHTML = `
+    <div class="card">
+      <h1>YAY!!! 💍💖</h1>
+      <p>Maitri, you just made my day 🥰</p>
+      <p>Happy Valentine’s Day 💕</p>
+    </div>
+  `;
+  hearts();
 }
 
 function moveNo() {
@@ -61,6 +129,18 @@ function moveNo() {
   const y = Math.random() * (window.innerHeight - 50);
   no.style.left = x + "px";
   no.style.top = y + "px";
+}
+
+function hearts() {
+  for (let i = 0; i < 25; i++) {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "💖";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.animationDuration = (Math.random() * 2 + 3) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 5000);
+  }
 }
 </script>
 
